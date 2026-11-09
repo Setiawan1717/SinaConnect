@@ -18,14 +18,17 @@
                         sans: ['Inter', 'sans-serif'],
                         display: ['Plus Jakarta Sans', 'sans-serif'],
                     },
+                    boxShadow: {
+                        xs: '0 1px 2px rgba(10, 26, 63, 0.06)',
+                    },
                     colors: {
                         pmii: {
-                            navy: '#0f2557',
-                            blue: '#1e3a8a',
-                            royal: '#1d4ed8',
-                            gold: '#eab308',
-                            yellow: '#facc15',
-                            light: '#eff6ff'
+                            navy: '#0a1a3f',
+                            blue: '#1a3a8f',
+                            royal: '#2550e0',
+                            gold: '#f0a81c',
+                            yellow: '#ffc93c',
+                            light: '#eef3ff'
                         }
                     }
                 }
@@ -54,18 +57,282 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        /* ==========================================
+           DESIGN LAYER — tampilan & animasi
+           (hanya visual; tidak mengubah fungsi/JS)
+        =========================================== */
+        :root {
+            --navy: #0a1a3f;
+            --navy-2: #0e2252;
+            --blue: #1a3a8f;
+            --royal: #2550e0;
+            --gold: #f0a81c;
+            --yellow: #ffc93c;
+            --ink: #0f172a;
+            --line: rgba(15, 23, 42, 0.08);
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-card: 0 1px 2px rgba(10, 26, 63, 0.04), 0 4px 16px -6px rgba(10, 26, 63, 0.08);
+            --shadow-hover: 0 2px 4px rgba(10, 26, 63, 0.04), 0 18px 40px -14px rgba(10, 26, 63, 0.22);
+        }
+
+        body {
+            background-color: #f4f6fb;
+            background-image:
+                radial-gradient(1000px 520px at 100% -10%, rgba(37, 80, 224, 0.08), transparent 60%),
+                radial-gradient(800px 480px at -10% 110%, rgba(240, 168, 28, 0.08), transparent 60%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4 { letter-spacing: -0.015em; }
+
+        /* ---------- Konten utama ---------- */
+        #main-scroll { scroll-behavior: smooth; }
+        .view-section {
+            max-width: 82rem;
+            margin-inline: auto;
+            width: 100%;
+        }
+
+        /* Kartu putih: bayangan lembut + border halus */
+        main .bg-white.rounded-2xl,
+        main .bg-white.rounded-xl {
+            border-color: var(--line);
+            box-shadow: var(--shadow-card);
+        }
+        main .bg-white.rounded-2xl {
+            transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.25s ease;
+        }
+
+        /* Kartu yang bisa diklik / kartu konten: efek terangkat */
+        main [onclick].rounded-2xl:hover,
+        #radar-grid > *:hover,
+        #market-grid > *:hover,
+        #aksara-grid > *:hover,
+        #lentera-grid > *:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        #radar-grid > *, #market-grid > *, #aksara-grid > *, #lentera-grid > * {
+            transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.25s ease;
+        }
+
+        /* Kartu judul tiap halaman fitur: aksen gradasi */
+        .view-section > .bg-white.rounded-2xl:first-child {
+            position: relative;
+            overflow: hidden;
+            background-image:
+                radial-gradient(600px 200px at 100% 0%, rgba(255, 201, 60, 0.16), transparent 70%),
+                radial-gradient(500px 220px at 0% 100%, rgba(37, 80, 224, 0.07), transparent 70%);
+        }
+        .view-section > .bg-white.rounded-2xl:first-child::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--yellow), var(--gold) 45%, var(--royal));
+        }
+
+        /* ---------- Header atas ---------- */
+        #top-header { position: relative; }
+        #top-header::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: -1px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(240, 168, 28, 0.5), rgba(37, 80, 224, 0.35), transparent);
+        }
+        @media (max-width: 639px) {
+            #header-admin-pill { display: none !important; }
+        }
+
+        /* ---------- Sidebar ---------- */
+        #sidebar {
+            background:
+                radial-gradient(420px 260px at 0% 0%, rgba(37, 80, 224, 0.35), transparent 70%),
+                radial-gradient(360px 300px at 100% 100%, rgba(240, 168, 28, 0.14), transparent 70%),
+                linear-gradient(180deg, #0b1d47 0%, #08142f 100%);
+        }
+        #sidebar nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); }
+        #sidebar nav::-webkit-scrollbar-track { background: transparent; }
+        .nav-btn {
+            position: relative;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.25s var(--ease-out), box-shadow 0.25s ease !important;
+        }
+        .nav-btn i { transition: transform 0.3s var(--ease-spring); }
+        .nav-btn:hover:not(.nav-active) { transform: translateX(3px); }
+        .nav-btn:hover i { transform: scale(1.15); }
         .nav-active {
-            background: linear-gradient(90deg, #eab308 0%, #facc15 100%);
-            color: #0f2557 !important;
+            background: linear-gradient(100deg, var(--yellow) 0%, var(--gold) 100%);
+            color: var(--navy) !important;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25);
+            box-shadow: 0 8px 22px -8px rgba(240, 168, 28, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            animation: navPop 0.4s var(--ease-spring);
         }
-        .fade-in {
-            animation: fadeIn 0.22s ease-out forwards;
+        .nav-active::before {
+            content: '';
+            position: absolute;
+            left: -12px; top: 50%;
+            width: 4px; height: 60%;
+            transform: translateY(-50%);
+            border-radius: 0 4px 4px 0;
+            background: var(--yellow);
+            box-shadow: 0 0 12px rgba(255, 201, 60, 0.8);
         }
+        @keyframes navPop {
+            0% { transform: scale(0.96); }
+            100% { transform: scale(1); }
+        }
+
+        /* ---------- Hero Beranda ---------- */
+        #hero-banner { isolation: isolate; }
+        #hero-banner > .relative { position: relative; z-index: 2; }
+        .hero-grid {
+            position: absolute; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+            background-size: 36px 36px;
+            -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 10%, transparent 70%);
+                    mask-image: radial-gradient(ellipse at 70% 40%, #000 10%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-blob {
+            position: absolute; z-index: 0;
+            border-radius: 9999px;
+            filter: blur(50px);
+            pointer-events: none;
+        }
+        .hero-blob-1 {
+            width: 320px; height: 320px; right: -60px; top: -120px;
+            background: rgba(255, 201, 60, 0.35);
+            animation: blobFloat 14s ease-in-out infinite;
+        }
+        .hero-blob-2 {
+            width: 280px; height: 280px; right: 25%; bottom: -160px;
+            background: rgba(56, 120, 255, 0.45);
+            animation: blobFloat 18s ease-in-out infinite reverse;
+        }
+        .hero-atom { z-index: 1; animation: spinSlow 40s linear infinite; }
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, 30px) scale(1.12); }
+        }
+        @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+        /* ---------- Animasi masuk halaman (stagger) ---------- */
+        .fade-in { animation: fadeIn 0.45s var(--ease-out) backwards; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(14px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        .view-section:not(.hidden) > * { animation: riseIn 0.55s var(--ease-out) backwards; }
+        .view-section:not(.hidden) > *:nth-child(2) { animation-delay: 0.06s; }
+        .view-section:not(.hidden) > *:nth-child(3) { animation-delay: 0.12s; }
+        .view-section:not(.hidden) > *:nth-child(4) { animation-delay: 0.18s; }
+        .view-section:not(.hidden) > *:nth-child(n+5) { animation-delay: 0.24s; }
+
+        /* Item daftar hasil render JS juga muncul bertahap */
+        #space-tabs > *, #radar-grid > *, #lentera-grid > *, #aksara-grid > *,
+        #market-grid > *, #agenda-list > *, #beranda-agenda-preview > *, #beranda-aksara-preview > *,
+        #proker-table-body > tr, #anggota-table-body > tr,
+        .view-section:not(.hidden) .grid > div {
+            animation: riseIn 0.5s var(--ease-out) backwards;
+        }
+        #space-tabs > *:nth-child(2), #radar-grid > *:nth-child(2), #lentera-grid > *:nth-child(2), #aksara-grid > *:nth-child(2), #market-grid > *:nth-child(2), #agenda-list > *:nth-child(2), #proker-table-body > tr:nth-child(2), #anggota-table-body > tr:nth-child(2), .view-section:not(.hidden) .grid > div:nth-child(2) { animation-delay: 0.05s; }
+        #space-tabs > *:nth-child(3), #radar-grid > *:nth-child(3), #lentera-grid > *:nth-child(3), #aksara-grid > *:nth-child(3), #market-grid > *:nth-child(3), #agenda-list > *:nth-child(3), #proker-table-body > tr:nth-child(3), #anggota-table-body > tr:nth-child(3), .view-section:not(.hidden) .grid > div:nth-child(3) { animation-delay: 0.1s; }
+        #space-tabs > *:nth-child(4), #radar-grid > *:nth-child(4), #lentera-grid > *:nth-child(4), #aksara-grid > *:nth-child(4), #market-grid > *:nth-child(4), #agenda-list > *:nth-child(4), #proker-table-body > tr:nth-child(4), #anggota-table-body > tr:nth-child(4), .view-section:not(.hidden) .grid > div:nth-child(4) { animation-delay: 0.15s; }
+        #space-tabs > *:nth-child(n+5), #radar-grid > *:nth-child(n+5), #lentera-grid > *:nth-child(n+5), #aksara-grid > *:nth-child(n+5), #market-grid > *:nth-child(n+5), #agenda-list > *:nth-child(n+5), #proker-table-body > tr:nth-child(n+5), #anggota-table-body > tr:nth-child(n+5), .view-section:not(.hidden) .grid > div:nth-child(n+5) { animation-delay: 0.2s; }
+
+        /* ---------- Tombol & input ---------- */
+        button { transition-property: color, background-color, border-color, box-shadow, transform, opacity; transition-duration: 0.2s; }
+        button:active:not(:disabled) { transform: scale(0.97); }
+        .bg-pmii-navy.text-pmii-yellow:hover,
+        .bg-pmii-yellow:hover { box-shadow: 0 10px 22px -10px rgba(10, 26, 63, 0.45); }
+        input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+        select, textarea {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            background-color: #fbfcfe;
+        }
+        input:not([type="file"]):focus, select:focus, textarea:focus {
+            border-color: var(--royal) !important;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 80, 224, 0.12);
+        }
+        img { transition: transform 0.5s var(--ease-out); }
+
+        /* Tabel */
+        main table thead { background: linear-gradient(180deg, #f8fafc, #f1f5f9); }
+        main tbody tr { transition: background-color 0.2s ease; }
+        main tbody tr:hover { background-color: rgba(37, 80, 224, 0.04); }
+
+        /* ---------- Modal & overlay ---------- */
+        [id^="modal-"].flex {
+            animation: overlayIn 0.25s ease backwards;
+            background-color: rgba(8, 20, 47, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        [id^="modal-"].flex > div {
+            animation: modalIn 0.42s var(--ease-spring) backwards;
+            box-shadow: 0 30px 80px -20px rgba(8, 20, 47, 0.55);
+        }
+        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(18px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        #sidebar-backdrop:not(.hidden) { animation: overlayIn 0.25s ease backwards; }
+
+        /* ---------- Gerbang login ---------- */
+        #auth-gate {
+            background:
+                radial-gradient(700px 500px at 15% 10%, rgba(37, 80, 224, 0.45), transparent 60%),
+                radial-gradient(600px 460px at 90% 90%, rgba(240, 168, 28, 0.25), transparent 60%),
+                rgba(6, 15, 36, 0.94);
+        }
+        #auth-gate:not(.hidden) { animation: overlayIn 0.35s ease backwards; }
+        #auth-gate > div {
+            animation: modalIn 0.6s var(--ease-spring) 0.05s backwards;
+            box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        #auth-gate > div > div:first-child { position: relative; }
+        #auth-gate > div > div:first-child::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+            background-size: 18px 18px;
+            -webkit-mask-image: linear-gradient(180deg, #000, transparent 85%);
+                    mask-image: linear-gradient(180deg, #000, transparent 85%);
+            pointer-events: none;
+        }
+        #auth-gate > div > div:first-child > * { position: relative; z-index: 1; }
+        #auth-gate .fa-atom { animation: spinSlow 12s linear infinite; }
+        #auth-panel-login:not(.hidden), #auth-panel-register:not(.hidden) { animation: riseIn 0.4s var(--ease-out) backwards; }
+
+        /* ---------- Toast ---------- */
+        #toast:not(.hidden) > div {
+            animation: toastIn 0.5s var(--ease-spring) backwards;
+            box-shadow: 0 20px 40px -12px rgba(8, 20, 47, 0.5);
+            backdrop-filter: blur(8px);
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Hormati preferensi kurangi gerakan */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                animation-delay: 0s !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
@@ -423,15 +690,15 @@
         <!-- MAIN CONTENT AREA -->
         <div class="flex-1 flex flex-col h-screen overflow-hidden">
             <!-- Top Header -->
-            <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex items-center justify-between z-20">
-                <div class="flex items-center gap-3">
+            <header id="top-header" class="bg-white/75 backdrop-blur-xl border-b border-slate-200/70 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 z-20">
+                <div class="flex items-center gap-3 min-w-0">
                     <!-- Tombol ">>" hanya muncul saat sidebar sedang ditutup (atau di layar HP) -->
                     <button onclick="toggleSidebar()" id="btn-open-sidebar" class="lg:hidden p-2 rounded-xl text-pmii-navy bg-amber-50 hover:bg-amber-100 border border-amber-200 transition cursor-pointer flex items-center justify-center" title="Buka Menu Samping">
                         <i class="fa-solid fa-angles-right text-base"></i>
                     </button>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 id="header-title" class="text-lg sm:text-xl font-bold text-slate-900">Beranda Ekosistem Kader</h1>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <h1 id="header-title" class="text-base sm:text-xl font-extrabold tracking-tight text-slate-900 truncate">Beranda Ekosistem Kader</h1>
                             <span id="header-admin-pill" class="hidden text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                                 <i class="fa-solid fa-wrench mr-1"></i>Mode Admin Aktif
                             </span>
@@ -440,27 +707,30 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2.5 shrink-0">
                     <button onclick="switchView('radar')" class="hidden sm:flex items-center gap-2 text-xs font-semibold bg-blue-50 text-pmii-blue px-3 py-2 rounded-xl hover:bg-blue-100 transition cursor-pointer">
                         <i class="fa-solid fa-bolt text-amber-500"></i>
                         <span id="header-radar-count">6 Info Lomba & Beasiswa</span>
                     </button>
                     <button onclick="openTanyaSahabatModal('Umum / Konsultasi Kaderisasi & Akademik')" class="flex items-center gap-2 text-xs font-bold bg-pmii-navy text-pmii-yellow px-3.5 py-2 rounded-xl hover:bg-pmii-blue transition shadow-xs cursor-pointer">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
-                        <span>Tanya Sahabat</span>
+                        <span class="hidden sm:inline">Tanya Sahabat</span>
                     </button>
                 </div>
             </header>
 
             <!-- Dynamic Scrollable Container -->
-            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+            <main id="main-scroll" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
 
                 <!-- ==========================================
                      VIEW 0: BERANDA (RINGKASAN EKOSISTEM)
                 =========================================== -->
                 <section id="view-beranda" class="view-section fade-in space-y-6">
                     <!-- Hero Banner -->
-                    <div class="relative rounded-2xl bg-gradient-to-r from-pmii-navy via-pmii-blue to-blue-800 text-white p-6 sm:p-8 overflow-hidden shadow-lg">
+                    <div id="hero-banner" class="relative rounded-3xl bg-gradient-to-br from-pmii-navy via-pmii-blue to-pmii-royal text-white p-6 sm:p-10 overflow-hidden shadow-xl">
+                        <div class="hero-grid" aria-hidden="true"></div>
+                        <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+                        <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
                         <div class="relative z-10 max-w-2xl space-y-3">
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-pmii-yellow text-pmii-navy">
                                 <i class="fa-solid fa-star"></i> Dzikir, Fikir, Amal Sholeh
@@ -480,7 +750,7 @@
                                 </button>
                             </div>
                         </div>
-                        <i class="fa-solid fa-atom absolute -right-8 -bottom-8 text-[180px] text-white/5 pointer-events-none"></i>
+                        <i class="hero-atom fa-solid fa-atom absolute -right-10 -bottom-10 text-[220px] text-white/10 pointer-events-none"></i>
                     </div>
 
                     <!-- 4 Quick Summary Cards -->
@@ -610,7 +880,7 @@
                     </div>
 
                     <!-- Grid 2 Kolom Radar Avicenna -->
-                    <div id="radar-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                    <div id="radar-grid" class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6"></div>
                 </section>
 
                 <!-- ==========================================
@@ -724,7 +994,7 @@
                         <button onclick="filterMarket('Jasa & Merch')" class="market-filter-btn bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-2 rounded-xl hover:bg-slate-50 cursor-pointer">Jasa & Merch</button>
                     </div>
 
-                    <div id="market-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                    <div id="market-grid" class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6"></div>
                 </section>
 
                 <!-- ==========================================
